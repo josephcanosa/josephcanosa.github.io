@@ -1,0 +1,544 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
+
+/* =========================================================
+   1. ESTRUCTURA Y LIENZO A ANCHO COMPLETO
+   ========================================================= */
+.jc-page {
+  --jc-bg: #F4F1EA;
+  --jc-text: #1C1C1C;
+  --jc-muted: #7A7874;
+  --jc-line: rgba(28, 28, 28, 0.12);
+  --jc-accent: #FF7825;
+  --jc-serif: 'Newsreader', Georgia, serif;
+  --jc-sans: 'Inter', -apple-system, sans-serif;
+
+  background-color: #F4F1EA !important;
+  color: #1C1C1C !important;
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  -webkit-font-smoothing: antialiased !important;
+  line-height: normal !important;
+  text-align: left !important;
+
+  width: 100vw !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  position: relative !important;
+  left: 50% !important;
+  right: 50% !important;
+  margin: 0 -50vw !important;
+  padding: 32px !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 0 0 100vmax #F4F1EA !important;
+  clip-path: inset(0 -100vmax -100vmax -100vmax) !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+}
+
+.jc-page *,
+.jc-page *::before,
+.jc-page *::after {
+  box-sizing: border-box !important;
+}
+
+/* =========================================================
+   2. CURSORES DE SELECCIÓN Y TEXTO
+   ========================================================= */
+.jc-page,
+.jc-page * {
+  cursor: auto !important;
+}
+
+.jc-page h1,
+.jc-page h2,
+.jc-page p,
+.jc-page span:not(.jc-line),
+.jc-page .jc-caption {
+  cursor: text !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
+.jc-page a,
+.jc-page label,
+.jc-page button {
+  cursor: pointer !important;
+}
+
+/* =========================================================
+   3. CABECERA
+   ========================================================= */
+.jc-page .jc-header {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: none !important;
+  border: 0 !important;
+  position: relative !important;
+  z-index: 100 !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-logo,
+.jc-page.jc-page.jc-page a.jc-logo:link,
+.jc-page.jc-page.jc-page a.jc-logo:visited {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 17px !important;
+  font-weight: 500 !important;
+  color: #1C1C1C !important;
+  -webkit-text-fill-color: #1C1C1C !important;
+  text-decoration: none !important;
+  letter-spacing: -0.01em !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  background: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  line-height: 1.2 !important;
+}
+
+/* =========================================================
+   4. MENÚ DESPLEGABLE (CHECKBOX + LABEL)
+   ========================================================= */
+.jc-page.jc-page.jc-page .jc-menu-check {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+}
+
+.jc-page.jc-page.jc-page label.jc-menu-btn {
+  width: 42px !important;
+  height: 42px !important;
+  flex: 0 0 42px !important;
+  align-self: center !important;
+  background-color: #1C1C1C !important;
+  border: 1px solid #1C1C1C !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 0 !important;
+  margin: 0 -16px 0 auto !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease !important;
+}
+
+.jc-page.jc-page.jc-page label.jc-menu-btn:hover,
+.jc-page.jc-page.jc-page .jc-menu-check:checked ~ label.jc-menu-btn {
+  background-color: #FF7825 !important;
+  border-color: #FF7825 !important;
+}
+
+.jc-page.jc-page.jc-page .jc-menu-check:focus-visible ~ label.jc-menu-btn {
+  outline: 2px solid #FF7825 !important;
+  outline-offset: 3px !important;
+}
+
+.jc-page.jc-page.jc-page label.jc-menu-btn .jc-line {
+  display: block !important;
+  width: 16px !important;
+  height: 1.5px !important;
+  background-color: #F4F1EA !important;
+  opacity: 1 !important;
+  transition: transform 0.2s ease !important;
+}
+
+.jc-page.jc-page.jc-page .jc-menu-check:checked ~ label.jc-menu-btn .jc-line:nth-child(1) {
+  transform: translateY(3.25px) rotate(45deg) !important;
+}
+
+.jc-page.jc-page.jc-page .jc-menu-check:checked ~ label.jc-menu-btn .jc-line:nth-child(2) {
+  transform: translateY(-3.25px) rotate(-45deg) !important;
+}
+
+.jc-page.jc-page.jc-page label.jc-menu-overlay {
+  display: none !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: transparent !important;
+  z-index: 90 !important;
+  cursor: default !important;
+}
+
+.jc-page.jc-page.jc-page .jc-menu-check:checked ~ label.jc-menu-overlay {
+  display: block !important;
+}
+
+.jc-page.jc-page.jc-page nav.jc-menu-panel {
+  position: absolute !important;
+  top: calc(100% + 10px) !important;
+  right: -16px !important;
+  z-index: 100 !important;
+  min-width: 168px !important;
+  width: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background-color: #F4F1EA !important;
+  border: 1px solid #1C1C1C !important;
+  border-radius: 22px !important;
+  padding: 10px 0 !important;
+  margin: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: translateY(-6px) !important;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s !important;
+}
+
+.jc-page.jc-page.jc-page .jc-menu-check:checked ~ nav.jc-menu-panel {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
+}
+
+.jc-page.jc-page.jc-page nav.jc-menu-panel a.jc-menu-link,
+.jc-page.jc-page.jc-page nav.jc-menu-panel a.jc-menu-link:link,
+.jc-page.jc-page.jc-page nav.jc-menu-panel a.jc-menu-link:visited,
+.jc-page.jc-page.jc-page nav.jc-menu-panel a.jc-menu-link:last-child {
+  border: 0 !important;
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  min-height: 38px !important;
+  line-height: 1 !important;
+  padding: 0 26px !important;
+  font-family: 'Newsreader', Georgia, serif !important;
+  font-size: 19px !important;
+  font-weight: 400 !important;
+  color: #1C1C1C !important;
+  -webkit-text-fill-color: #1C1C1C !important;
+  text-decoration: none !important;
+  text-transform: none !important;
+  background: none !important;
+  transition: color 0.2s ease !important;
+}
+
+.jc-page.jc-page.jc-page nav.jc-menu-panel a.jc-menu-link:hover {
+  color: #FF7825 !important;
+  -webkit-text-fill-color: #FF7825 !important;
+}
+
+/* =========================================================
+   5. TITULAR CENTRAL
+   ========================================================= */
+.jc-hero {
+  padding: 40px 0 !important;
+  margin: 0 !important;
+  flex-grow: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  background: none !important;
+  border: 0 !important;
+}
+
+.jc-page h1.jc-headline {
+  font-family: 'Newsreader', Georgia, serif !important;
+  font-size: clamp(34px, 4.4vw, 76px) !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.005em !important;
+  font-weight: 400 !important;
+  color: #1C1C1C !important;
+  text-transform: none !important;
+  text-align: left !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.jc-page .jc-accent {
+  display: inline-block !important;
+  color: #1C1C1C !important;
+  animation: jcPulseAccent 5s ease-in-out infinite !important;
+  animation-delay: 1s !important;
+}
+
+@keyframes jcPulseAccent {
+  0%, 100% { color: #1C1C1C; }
+  50% { color: #FF7825; }
+}
+
+/* =========================================================
+   6. PIE DE PÁGINA
+   ========================================================= */
+.jc-footer {
+  width: 100% !important;
+  padding: 24px 0 0 0 !important;
+  margin: 0 !important;
+  background: none !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(28, 28, 28, 0.12) !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 16px 24px !important;
+}
+
+.jc-footer-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 20px !important;
+  flex-wrap: wrap !important;
+}
+
+.jc-actions {
+  display: flex !important;
+  gap: 10px !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-button,
+.jc-page.jc-page.jc-page a.jc-button:link,
+.jc-page.jc-page.jc-page a.jc-button:visited,
+.jc-page.jc-page.jc-page button.jc-button {
+  background-color: transparent !important;
+  color: #1C1C1C !important;
+  -webkit-text-fill-color: #1C1C1C !important;
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  line-height: normal !important;
+  padding: 8px 16px !important;
+  border: 1px solid #1C1C1C !important;
+  border-radius: 62px !important;
+  cursor: pointer !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.01em !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: background-color 0.2s ease, color 0.2s ease !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-button:hover,
+.jc-page.jc-page.jc-page button.jc-button:hover {
+  background-color: #1C1C1C !important;
+  color: #F4F1EA !important;
+  -webkit-text-fill-color: #F4F1EA !important;
+}
+
+.jc-social {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-social-link,
+.jc-page.jc-page.jc-page a.jc-social-link:link,
+.jc-page.jc-page.jc-page a.jc-social-link:visited {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: #1C1C1C !important;
+  -webkit-text-fill-color: #1C1C1C !important;
+  text-decoration: none !important;
+  letter-spacing: -0.01em !important;
+  opacity: 0.85 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  background: none !important;
+  visibility: visible !important;
+  transition: opacity 0.2s ease, color 0.2s ease !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-social-link:hover {
+  opacity: 1 !important;
+  color: #FF7825 !important;
+  -webkit-text-fill-color: #FF7825 !important;
+}
+
+.jc-caption {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+  color: #7A7874 !important;
+  -webkit-text-fill-color: #7A7874 !important;
+  white-space: nowrap !important;
+}
+
+/* =========================================================
+   7. AJUSTES ESCRITORIO
+   ========================================================= */
+@media (min-width: 769px) {
+  html, body {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
+
+  /* Vista pantalla fija (Home) */
+  .jc-page:not(.jc-scrollable) {
+    min-height: 100vh !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    padding: 24px 32px 32px 32px !important;
+    overflow: hidden !important;
+  }
+
+  /* Solo si la barra negra de WordPress está visible (sesión iniciada): se descuenta su alto */
+  body.admin-bar .jc-page:not(.jc-scrollable) {
+    min-height: calc(100vh - 32px) !important;
+    height: calc(100vh - 32px) !important;
+    max-height: calc(100vh - 32px) !important;
+  }
+
+  /* Vista con scroll libre para páginas de lectura (Transparencia / Trayectoria) */
+  /* NOTA: Se unifica el padding inferior exactamente a 32px para igualar al index */
+  .jc-page.jc-scrollable {
+    height: auto !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+    padding: 32px 32px 32px 32px !important;
+  }
+
+  .jc-hero {
+    padding: 0 !important;
+  }
+
+  .jc-footer {
+    padding-top: 14px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .jc-page.jc-page.jc-page label.jc-menu-btn {
+    margin: 0 48px 0 auto !important;
+  }
+
+  .jc-page.jc-page.jc-page nav.jc-menu-panel {
+    right: 48px !important;
+  }
+}
+
+/* =========================================================
+   8. AJUSTES CELULAR / TABLET
+   ========================================================= */
+@media (max-width: 768px) {
+  .jc-page {
+    padding: 24px 20px !important;
+    height: auto !important;
+    min-height: 100vh !important;
+  }
+
+  .jc-page label.jc-menu-btn {
+    margin: 0 -8px 0 auto !important;
+  }
+
+  .jc-page nav.jc-menu-panel {
+    right: -8px !important;
+    min-width: 156px !important;
+    border-radius: 20px !important;
+  }
+
+  .jc-page nav.jc-menu-panel a.jc-menu-link,
+  .jc-page nav.jc-menu-panel a.jc-menu-link:link,
+  .jc-page nav.jc-menu-panel a.jc-menu-link:visited {
+    font-size: 18px !important;
+    padding: 0 20px !important;
+    min-height: 36px !important;
+  }
+
+  .jc-hero {
+    padding: 24px 0 !important;
+  }
+
+  .jc-page h1.jc-headline {
+    font-size: clamp(32px, 8.5vw, 42px) !important;
+    line-height: 1.15 !important;
+  }
+
+  .jc-footer {
+    padding-top: 18px !important;
+    gap: 14px !important;
+  }
+
+  .jc-footer-left {
+    gap: 16px !important;
+  }
+
+  .jc-page a.jc-button,
+  .jc-page button.jc-button {
+    font-size: 10px !important;
+    padding: 7px 13px !important;
+  }
+
+  .jc-page a.jc-social-link {
+    font-size: 11px !important;
+  }
+
+  .jc-caption {
+    font-size: 10px !important;
+  }
+}
+
+/* =========================================================
+   9. ESTILOS DE DOCUMENTO EDITORIAL Y FORMULARIO
+   ========================================================= */
+.jc-reader-column {
+  width: 100% !important;
+  max-width: 720px !important;
+  margin: 40px auto 60px auto !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  flex-grow: 1 !important;
+}
+
+.jc-doc-kicker {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  color: #7A7874 !important;
+  margin-bottom: 20px !important;
+  line-height: 1 !important;
+}
+
+.jc-doc-h1 {
+  font-family: 'Newsreader', Georgia, serif !important;
+  font-size: clamp(32px, 4.2vw, 48px) !important;
+  line-height: 1.18 !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.01em !important;
+  color: #1C1C1C !important;
+  margin: 0 0 24px 0 !important;
+}
+
+.jc-doc-standfirst {
+  font-family: 'Newsreader', Georgia, serif !important;
+  font-size: clamp(20px, 2.3vw, 24px) !important;
+  line-height: 1.35 !important;
+  color: #1C1C1C !important;
+  margin: 0 0 16px 0 !important;
+}
+
+.jc-doc-notice {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  color: #7A7874 !important;
+  margin: 0 0 32px 0 !important;
+  padding-bottom: 18px !important;
+  border-bottom: 1px solid rgba(28, 28, 28, 0.12) !important;
+}
