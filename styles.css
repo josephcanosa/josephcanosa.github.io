@@ -251,3 +251,295 @@ html, body {
 
 .jc-page h1.jc-headline {
   font-family: 'Newsreader', Georgia, serif !important;
+  font-size: clamp(34px, 4.4vw, 76px) !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.005em !important;
+  font-weight: 400 !important;
+  color: #1C1C1C !important;
+  text-transform: none !important;
+  text-align: left !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.jc-page .jc-accent {
+  display: inline-block !important;
+  color: #1C1C1C !important;
+  animation: jcPulseAccent 5s ease-in-out infinite !important;
+  animation-delay: 1s !important;
+}
+
+@keyframes jcPulseAccent {
+  0%, 100% { color: #1C1C1C; }
+  50% { color: #FF7825; }
+}
+
+/* =========================================================
+   6. PIE DE PÁGINA
+   ========================================================= */
+.jc-footer {
+  width: 100% !important;
+  padding: 20px 0 0 0 !important;
+  margin: 0 !important;
+  background: none !important;
+  border: 0 !important;
+  border-top: 1px solid rgba(28, 28, 28, 0.12) !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 16px 24px !important;
+}
+
+.jc-footer-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 20px !important;
+  flex-wrap: wrap !important;
+}
+
+.jc-actions {
+  display: flex !important;
+  gap: 10px !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-button,
+.jc-page.jc-page.jc-page a.jc-button:link,
+.jc-page.jc-page.jc-page a.jc-button:visited,
+.jc-page.jc-page.jc-page button.jc-button {
+  background-color: transparent !important;
+  color: #1C1C1C !important;
+  -webkit-text-fill-color: #1C1C1C !important;
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  line-height: normal !important;
+  padding: 8px 16px !important;
+  border: 1px solid #1C1C1C !important;
+  border-radius: 62px !important;
+  cursor: pointer !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.01em !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition: background-color 0.2s ease, color 0.2s ease !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-button:hover,
+.jc-page.jc-page.jc-page button.jc-button:hover {
+  background-color: #1C1C1C !important;
+  color: #F4F1EA !important;
+  -webkit-text-fill-color: #F4F1EA !important;
+}
+
+.jc-social {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-social-link,
+.jc-page.jc-page.jc-page a.jc-social-link:link,
+.jc-page.jc-page.jc-page a.jc-social-link:visited {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: #1C1C1C !important;
+  -webkit-text-fill-color: #1C1C1C !important;
+  text-decoration: none !important;
+  letter-spacing: -0.01em !important;
+  opacity: 0.85 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  background: none !important;
+  visibility: visible !important;
+  transition: opacity 0.2s ease, color 0.2s ease !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-social-link:hover {
+  opacity: 1 !important;
+  color: #FF7825 !important;
+  -webkit-text-fill-color: #FF7825 !important;
+}
+
+.jc-caption {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+  color: #7A7874 !important;
+  -webkit-text-fill-color: #7A7874 !important;
+  white-space: nowrap !important;
+}
+
+/* =========================================================
+   7. AJUSTES ESCRITORIO
+   ========================================================= */
+@media (min-width: 769px) {
+  /* Si la página no es scrolleable, la ventana queda bloqueada sin barras */
+  html:has(.jc-page:not(.jc-scrollable)),
+  body:has(.jc-page:not(.jc-scrollable)) {
+    overflow-y: hidden !important;
+    height: 100vh !important;
+  }
+
+  /* Vista pantalla fija (Home) */
+  .jc-page:not(.jc-scrollable) {
+    height: 100vh !important;
+    max-height: 100vh !important;
+    padding: 32px 48px !important;
+    overflow: hidden !important;
+  }
+
+  /* Si existiera barra de WordPress */
+  body.admin-bar .jc-page:not(.jc-scrollable) {
+    height: calc(100vh - 32px) !important;
+    max-height: calc(100vh - 32px) !important;
+  }
+
+  /* Vista con scroll libre para lecturas largas (Transparencia / Trayectoria) */
+  .jc-page.jc-scrollable {
+    height: auto !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+    padding: 40px 48px !important;
+  }
+
+  .jc-hero {
+    padding: 0 !important;
+  }
+
+  .jc-footer {
+    padding-top: 16px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .jc-page.jc-page.jc-page label.jc-menu-btn {
+    margin: 0 !important;
+  }
+
+  .jc-page.jc-page.jc-page nav.jc-menu-panel {
+    right: 0 !important;
+  }
+}
+
+/* =========================================================
+   8. AJUSTES CELULAR / TABLET
+   ========================================================= */
+@media (max-width: 768px) {
+  .jc-page {
+    padding: 24px 20px !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+  }
+
+  .jc-page label.jc-menu-btn {
+    margin: 0 !important;
+  }
+
+  .jc-page nav.jc-menu-panel {
+    right: 0 !important;
+    min-width: 156px !important;
+    border-radius: 20px !important;
+  }
+
+  .jc-page nav.jc-menu-panel a.jc-menu-link,
+  .jc-page nav.jc-menu-panel a.jc-menu-link:link,
+  .jc-page nav.jc-menu-panel a.jc-menu-link:visited {
+    font-size: 18px !important;
+    padding: 0 20px !important;
+    min-height: 36px !important;
+  }
+
+  .jc-hero {
+    padding: 24px 0 !important;
+  }
+
+  .jc-page h1.jc-headline {
+    font-size: clamp(32px, 8.5vw, 42px) !important;
+    line-height: 1.15 !important;
+  }
+
+  .jc-footer {
+    padding-top: 18px !important;
+    gap: 14px !important;
+  }
+
+  .jc-footer-left {
+    gap: 16px !important;
+  }
+
+  .jc-page a.jc-button,
+  .jc-page button.jc-button {
+    font-size: 10px !important;
+    padding: 7px 13px !important;
+  }
+
+  .jc-page a.jc-social-link {
+    font-size: 11px !important;
+  }
+
+  .jc-caption {
+    font-size: 10px !important;
+  }
+}
+
+/* =========================================================
+   9. ESTILOS DE DOCUMENTO EDITORIAL Y FORMULARIO
+   ========================================================= */
+.jc-reader-column {
+  width: 100% !important;
+  max-width: 720px !important;
+  margin: 40px auto 60px auto !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  flex-grow: 1 !important;
+}
+
+.jc-doc-kicker {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  color: #7A7874 !important;
+  margin-bottom: 20px !important;
+  line-height: 1 !important;
+}
+
+.jc-doc-h1 {
+  font-family: 'Newsreader', Georgia, serif !important;
+  font-size: clamp(32px, 4.2vw, 48px) !important;
+  line-height: 1.18 !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.01em !important;
+  color: #1C1C1C !important;
+  margin: 0 0 24px 0 !important;
+}
+
+.jc-doc-standfirst {
+  font-family: 'Newsreader', Georgia, serif !important;
+  font-size: clamp(20px, 2.3vw, 24px) !important;
+  line-height: 1.35 !important;
+  color: #1C1C1C !important;
+  margin: 0 0 16px 0 !important;
+}
+
+.jc-doc-notice {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  color: #7A7874 !important;
+  margin: 0 0 32px 0 !important;
+  padding-bottom: 18px !important;
+  border-bottom: 1px solid rgba(28, 28, 28, 0.12) !important;
+}
