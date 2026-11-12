@@ -543,3 +543,193 @@ html, body {
   padding-bottom: 18px !important;
   border-bottom: 1px solid rgba(28, 28, 28, 0.12) !important;
 }
+/* =========================================================
+   10. DIRECTORIO DE HERRAMIENTAS (GRILLA EDITORIAL)
+   ========================================================= */
+.jc-tools-filters {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin: 28px 0 36px 0 !important;
+  padding-bottom: 22px !important;
+  border-bottom: 1px solid rgba(28, 28, 28, 0.12) !important;
+}
+
+.jc-page.jc-page.jc-page button.jc-filter-pill {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-color: transparent !important;
+  color: #1C1C1C !important;
+  -webkit-text-fill-color: #1C1C1C !important;
+  border: 1px solid rgba(28, 28, 28, 0.24) !important;
+  border-radius: 62px !important;
+  padding: 6px 14px !important;
+  margin: 0 !important;
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
+}
+
+.jc-page.jc-page.jc-page button.jc-filter-pill:hover {
+  border-color: #FF7825 !important;
+  color: #FF7825 !important;
+  -webkit-text-fill-color: #FF7825 !important;
+}
+
+.jc-page.jc-page.jc-page button.jc-filter-pill.is-active {
+  background-color: #1C1C1C !important;
+  border-color: #1C1C1C !important;
+  color: #F4F1EA !important;
+  -webkit-text-fill-color: #F4F1EA !important;
+}
+
+.jc-cat-section {
+  margin: 0 0 44px 0 !important;
+}
+
+.jc-cat-section:last-of-type {
+  margin-bottom: 0 !important;
+}
+
+.jc-cat-section.is-hidden {
+  display: none !important;
+}
+
+.jc-cat-header {
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: space-between !important;
+  margin: 0 0 14px 0 !important;
+  padding: 0 0 8px 0 !important;
+}
+
+.jc-page h2.jc-cat-title {
+  font-family: 'Newsreader', Georgia, serif !important;
+  font-size: 23px !important;
+  font-weight: 400 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.01em !important;
+  color: #1C1C1C !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.jc-cat-count {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em !important;
+  color: #7A7874 !important;
+}
+
+/* Grilla editorial de bordes finos (hairline) */
+.jc-tools-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  border-top: 1px solid rgba(28, 28, 28, 0.14) !important;
+  border-left: 1px solid rgba(28, 28, 28, 0.14) !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-tool-card,
+.jc-page.jc-page.jc-page a.jc-tool-card:link,
+.jc-page.jc-page.jc-page a.jc-tool-card:visited {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  padding: 18px 20px !important;
+  margin: 0 !important;
+  text-decoration: none !important;
+  border: 0 !important;
+  border-right: 1px solid rgba(28, 28, 28, 0.14) !important;
+  border-bottom: 1px solid rgba(28, 28, 28, 0.14) !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-tool-card * {
+  cursor: pointer !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-tool-card:hover {
+  background-color: rgba(28, 28, 28, 0.03) !important;
+}
+
+.jc-tool-top {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  margin: 0 0 8px 0 !important;
+}
+
+.jc-tool-name {
+  font-family: 'Newsreader', Georgia, serif !important;
+  font-size: 19px !important;
+  font-weight: 400 !important;
+  line-height: 1.25 !important;
+  color: #1C1C1C !important;
+  -webkit-text-fill-color: #1C1C1C !important;
+  transition: color 0.2s ease !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-tool-card:hover .jc-tool-name {
+  color: #FF7825 !important;
+  -webkit-text-fill-color: #FF7825 !important;
+}
+
+.jc-tool-arrow {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 1.2 !important;
+  color: #7A7874 !important;
+  -webkit-text-fill-color: #7A7874 !important;
+  flex-shrink: 0 !important;
+  transition: transform 0.2s ease, color 0.2s ease !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-tool-card:hover .jc-tool-arrow {
+  transform: translate(2px, -2px) !important;
+  color: #FF7825 !important;
+  -webkit-text-fill-color: #FF7825 !important;
+}
+
+.jc-tool-desc {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  color: #4A4845 !important;
+  -webkit-text-fill-color: #4A4845 !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 640px) {
+  .jc-tools-filters {
+    gap: 6px !important;
+    margin: 22px 0 28px 0 !important;
+  }
+
+  .jc-page.jc-page.jc-page button.jc-filter-pill {
+    font-size: 10px !important;
+    padding: 6px 11px !important;
+  }
+
+  .jc-tools-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .jc-page.jc-page.jc-page a.jc-tool-card,
+  .jc-page.jc-page.jc-page a.jc-tool-card:link,
+  .jc-page.jc-page.jc-page a.jc-tool-card:visited {
+    padding: 16px !important;
+  }
+}
