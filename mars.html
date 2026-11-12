@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Descenso en Marte - José Carmuega</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+    <style>
+      .jc-mars-stage {
+        position: relative !important;
+        flex: 1 1 auto !important;
+        width: 100% !important;
+        min-height: 280px !important;
+        margin: 16px 0 !important;
+        border: 1px solid rgba(28, 28, 28, 0.16) !important;
+        background-color: #F4F1EA !important;
+        overflow: hidden !important;
+        touch-action: none !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+      }
+
+      #jc-mars-canvas {
+        display: block !important;
+        width: 100% !important;
+        height: 100% !important;
+        cursor: crosshair !important;
+      }
+
+      .jc-mars-hud {
+        position: absolute !important;
+        top: 14px !important;
+        left: 16px !important;
+        right: 16px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+        pointer-events: none !important;
+        font-family: 'Inter', -apple-system, sans-serif !important;
+        font-size: 11px !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.04em !important;
+        color: #1C1C1C !important;
+        z-index: 5 !important;
+      }
+
+      .jc-hud-group {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 6px !important;
+      }
+
+      .jc-hud-right {
+        text-align: right !important;
+        align-items: flex-end !important;
+      }
+
+      .jc-hud-label {
+        color: #7A7874 !important;
+        font-size: 10px !important;
+        text-transform: uppercase !important;
+      }
+
+      .jc-fuel-track {
+        width: 96px !important;
+        height: 4px !important;
+        border: 1px solid #1C1C1C !important;
+        background: transparent !important;
+        overflow: hidden !important;
+      }
+
+      .jc-fuel-fill {
+        height: 100% !important;
+        width: 100% !important;
+        background-color: #FF7825 !important;
+        transition: width 0.08s linear !important;
+      }
+
+      .jc-vel-ok {
+        color: #1C1C1C !important;
+      }
+
+      .jc-vel-warn {
+        color: #FF7825 !important;
+      }
+
+      /* Pantalla de bienvenida inicial (se oculta al empezar) */
+      .jc-mars-intro {
+        position: absolute !important;
+        inset: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
+        padding: 24px !important;
+        background-color: rgba(244, 241, 234, 0.88) !important;
+        backdrop-filter: blur(2px) !important;
+        -webkit-backdrop-filter: blur(2px) !important;
+        z-index: 12 !important;
+        transition: opacity 0.25s ease !important;
+      }
+
+      .jc-mars-intro.is-hidden {
+        opacity: 0 !important;
+        pointer-events: none !important;
+      }
+
+      .jc-mars-kicker {
+        font-family: 'Inter', sans-serif !important;
+        font-size: 10px !important;
+        font-weight: 500 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.1em !important;
+        color: #7A7874 !important;
+        margin-bottom: 10px !important;
+      }
+
+      .jc-mars-title {
+        font-family: 'Newsreader', Georgia, serif !important;
+        font-size: clamp(26px, 3.6vw, 38px) !important;
+        font-weight: 400 !important;
+        line-height: 1.15 !important;
+        color: #1C1C1C !important;
+        margin: 0 0 12px 0 !important;
+      }
+
+      .jc-mars-sub {
+        font-family: 'Inter', sans-serif !important;
+        font-size: 12.5px !important;
+        line-height: 1.55 !important;
+        color: #4A4845 !important;
+        max-width: 390px !important;
+        margin: 0 0 22px 0 !important;
+      }
+
+      .jc-mars-controls-hint {
+        display: flex !important;
+        gap: 16px !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 11px !important;
+        color: #7A7874 !important;
+        margin-bottom: 24px !important;
+        padding-top: 14px !important;
+        border-top: 1px solid rgba(28, 28, 28, 0.12) !important;
+      }
+
+      .jc-mars-controls-hint strong {
+        color: #1C1C1C !important;
+        font-weight: 500 !important;
+      }
+
+      /* Cartel editorial flotante al terminar (convive con el paisaje y la nave) */
+      .jc-mars-toast {
+        position: absolute !important;
+        top: 64px !important;
+        left: 20px !important;
+        max-width: 330px !important;
+        background-color: rgba(244, 241, 234, 0.94) !important;
+        border: 1px solid #1C1C1C !important;
+        padding: 16px 18px !important;
+        z-index: 11 !important;
+        opacity: 0 !important;
+        transform: translateY(-6px) !important;
+        pointer-events: none !important;
+        transition: opacity 0.3s ease, transform 0.3s ease !important;
+      }
+
+      .jc-mars-toast.is-visible {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        pointer-events: auto !important;
+      }
+
+      .jc-toast-kicker {
+        font-family: 'Inter', sans-serif !important;
+        font-size: 9.5px !important;
+        font-weight: 500 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.09em !important;
+        color: #FF7825 !important;
+        margin-bottom: 4px !important;
+      }
+
+      .jc-toast-title {
+        font-family: 'Newsreader', Georgia, serif !important;
+        font-size: 22px !important;
+        font-weight: 400 !important;
+        line-height: 1.15 !important;
+        color: #1C1C1C !important;
+        margin: 0 0 6px 0 !important;
+      }
+
+      .jc-toast-desc {
+        font-family: 'Inter', sans-serif !important;
+        font-size: 12px !important;
+        line-height: 1.45 !important;
+        color: #4A4845 !important;
+        margin: 0 0 14px 0 !important;
+      }
+
+      .jc-toast-actions {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        flex-wrap: wrap !important;
+      }
+
+      .jc-touch-zones {
+        position: absolute !important;
+        bottom: 10px !important;
+        left: 16px !important;
+        right: 16px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        pointer-events: none !important;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 9px !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.08em !important;
+        color: rgba(28, 28, 28, 0.35) !important;
+        z-index: 4 !important;
+      }
+
+      @media (max-width: 768px) {
+        .jc-mars-stage {
+          min-height: 58dvh !important;
+          margin: 12px 0 !important;
+        }
+        .jc-mars-hud {
+          top: 10px !important;
+          left: 12px !important;
+          right: 12px !important;
+          font-size: 10px !important;
+        }
+        .jc-fuel-track {
+          width: 74px !important;
+        }
+        .jc-mars-toast {
+          top: 56px !important;
+          left: 12px !important;
+          right: 12px !important;
+          max-width: none !important;
+          padding: 13px 14px !important;
+        }
+        .jc-toast-title {
+          font-size: 19px !important;
+        }
+        .jc-toast-desc {
+          font-size: 11.5px !important;
+          margin-bottom: 10px !important;
+        }
+      }
+    </style>
+</head>
+<body>
+<div class="jc-page">
+
+  <header class="jc-header">
+    <a href="index.html" class="jc-logo">José Carmuega</a>
+    <input type="checkbox" id="jc-menu-toggle" class="jc-menu-check" aria-label="Abrir menú">
+    <label for="jc-menu-toggle" class="jc-menu-btn" aria-hidden="true"><span class="jc-line"></span><span class="jc-line"></span></label>
+    <label for="jc-menu-toggle" class="jc-menu-overlay" aria-hidden="true"></label>
+    <nav class="jc-menu-panel" aria-label="Menú principal">
+      <a href="index.html" class="jc-menu-link">Inicio</a>
+      <a href="trayectoria.html" class="jc-menu-link">Trayectoria</a>
+      <a href="metodo.html" class="jc-menu-link">Método</a>
+      <a href="transparencia.html" class="jc-menu-link">Transparencia</a>
+      <a href="tools.html" class="jc-menu-link">Tools</a>
+      <a href="https://wa.me/5491158534321" target="_blank" rel="noopener" class="jc-menu-link">WhatsApp</a>
+      <a href="https://instagram.com/carmuegajose" target="_blank" rel="noopener" class="jc-menu-link">Instagram</a>
+    </nav>
+  </header>
+
+  <main class="jc-mars-stage" id="jc-mars-stage">
+    <div class="jc-mars-hud">
+      <div class="jc-hud-group">
+        <div><span class="jc-hud-label">Misión</span> &nbsp;<span id="hud-sol">SOL 01</span></div>
+        <div><span class="jc-hud-label">Combustible</span></div>
+        <div class="jc-fuel-track"><div class="jc-fuel-fill" id="hud-fuel"></div></div>
+      </div>
+
+      <div class="jc-hud-group">
+        <div><span class="jc-hud-label">Descenso</span> &nbsp;<span id="hud-vy" class="jc-vel-ok">0.0 m/s</span></div>
+        <div><span class="jc-hud-label">Deriva</span> &nbsp;<span id="hud-vx">0.0 m/s</span></div>
+      </div>
+
+      <div class="jc-hud-group jc-hud-right">
+        <div><span class="jc-hud-label">Puntos</span> &nbsp;<span id="hud-score">0000</span></div>
+        <div><span class="jc-hud-label">Récord</span> &nbsp;<span id="hud-best">0000</span></div>
+        <div id="hud-wind-wrap" style="display:none;"><span class="jc-hud-label">Brisa</span> &nbsp;<span id="hud-wind">0</span></div>
+      </div>
+    </div>
+
+    <div class="jc-touch-zones" aria-hidden="true">
+      <span>◂ Izquierda</span>
+      <span>[ Centro: Impulso ]</span>
+      <span>Derecha ▸</span>
+    </div>
+
+    <canvas id="jc-mars-canvas"></canvas>
+
+    <!-- 1. Bienvenida inicial (solo al entrar) -->
+    <div class="jc-mars-intro" id="jc-mars-intro">
+      <div class="jc-mars-kicker">Simulador de descenso · Offline</div>
+      <h1 class="jc-mars-title">Aterrizaje en Marte</h1>
+      <p class="jc-mars-sub">
+        Descendé con calma sobre una de las plataformas marcadas en naranja. Al posarte, desplegaremos el periscopio para observar la Tierra en el horizonte.
+      </p>
+      <div class="jc-mars-controls-hint">
+        <span><strong>PC:</strong> Flechas ↑ ← →</span>
+        <span><strong>Celular:</strong> Toques suaves izq / centro / der</span>
+      </div>
+      <button type="button" class="jc-button" id="jc-mars-start">Iniciar descenso</button>
+    </div>
+
+    <!-- 2. Cartel flotante de resultado (deja ver todo el paisaje y la nave) -->
+    <div class="jc-mars-toast" id="jc-mars-toast">
+      <div class="jc-toast-kicker" id="toast-kicker">Sol 01 completado</div>
+      <h2 class="jc-toast-title" id="toast-title">Aterrizaje exitoso</h2>
+      <p class="jc-toast-desc" id="toast-desc">Periscopio orientado hacia la Tierra.</p>
+      <div class="jc-toast-actions">
+        <button type="button" class="jc-button" id="jc-toast-next">Continuar al Sol 02</button>
+        <a href="tools.html" class="jc-social-link">Salir a Tools</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="jc-footer">
+    <div class="jc-footer-left">
+      <div class="jc-actions">
+        <a href="index.html" class="jc-button">Inicio</a>
+        <a href="tools.html" class="jc-button">Tools</a>
+      </div>
+      <nav class="jc-social" aria-label="Contacto">
+        <a href="https://wa.me/5491158534321" target="_blank" rel="noopener" class="jc-social-link">WhatsApp</a>
+        <a href="https://instagram.com/carmuegajose" target="_blank" rel="noopener" class="jc-social-link">Instagram</a>
+      </nav>
+    </div>
+    <div class="jc-caption">Planeta Marte · Gravedad 3,72 m/s²</div>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  const stage = document.getElementById('jc-mars-stage');
+  const canvas = document.getElementById('jc-mars-canvas');
+  const ctx = canvas.getContext('2d');
+
+  // HUD
+  const hudSol = document.getElementById('hud-sol');
+  const hudFuel = document.getElementById('hud-fuel');
+  const hudVy = document.getElementById('hud-vy');
+  const hudVx = document.getElementById('hud-vx');
+  const hudScore = document.getElementById('hud-score');
+  const hudBest = document.getElementById('hud-best');
+  const hudWindWrap = document.getElementById('hud-wind-wrap');
+  const hudWind = document.getElementById('hud-wind');
+
+  // Intro & Toast flotante
+  const intro = document.getElementById('jc-mars-intro');
+  const startBtn = document.getElementById('jc-mars-start');
+
+  const toast = document.getElementById('jc-mars-toast');
+  const toastKicker = document.getElementById('toast-kicker');
+  const toastTitle = document.getElementById('toast-title');
+  const toastDesc = document.getElementById('toast-desc');
+  const toastNextBtn = document.getElementById('jc-toast-next');
+
+  // Paleta editorial
+  const COLOR_BG = '#F4F1EA';
+  const COLOR_INK = '#1C1C1C';
+  const COLOR_MUTED = '#7A7874';
+  const COLOR_ACCENT = '#FF7825';
+
+  let width = 0;
+  let height = 0;
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  let state = 'IDLE'; // IDLE, PLAYING, LANDED, CRASHED
+  let sol = 1;
+  let score = 0;
+  let bestScore = parseInt(localStorage.getItem('jc_mars_best') || '0', 10);
+  hudBest.textContent = String(bestScore).padStart(4, '0');
+
+  // Física calibrada: suave, flotante y distendida
+  const GRAVITY = 0.0115;
+  const MAIN_THRUST = 0.032;
+  const SIDE_ASSIST = 0.012;
+  const ROT_SPEED = 0.028;
+  const MAX_TILT = 0.58;
+  const SAFE_VY = 1.95;
+  const SAFE_VX = 1.35;
+  const SAFE_ANGLE = 0.34;
+
+  let wind = 0;
+  let terrain = [];
+  let pads = [];
+  let debris = [];
+  let dust = [];
+  let stars = [];
+  let moonOrbitAngle = 0.6;
+  let periscopeExt = 0;
+
+  const earth = { x: 0, y: 0 };
+
+  const lander = {
+    x: 0,
+    y: 0,
+    vx: 0,
+    vy: 0,
+    angle: 0,
+    fuel: 100,
+    thrusting: false,
+    rotLeft: false,
+    rotRight: false
+  };
+
+  const keys = { up: false, left: false, right: false };
+  const activeTouches = new Map();
+
+  function resize() {
+    const rect = stage.getBoundingClientRect();
+    width = rect.width;
+    height = rect.height;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // Tierra ubicada arriba a la derecha para que no choque con el cartel flotante izquierdo
+    earth.x = width * 0.78;
+    earth.y = Math.max(82, height * 0.25);
+
+    generateStars();
+    if (state === 'IDLE') {
+      generateTerrain();
+      resetLander();
+    }
+  }
+
+  function generateStars() {
+    stars = [];
+    const count = Math.floor((width * height) / 15000);
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * (height * 0.56),
+        r: Math.random() > 0.8 ? 1.1 : 0.65
+      });
+    }
+  }
+
+  function generateTerrain() {
+    terrain = [];
+    pads = [];
+
+    const segments = Math.max(16, Math.floor(width / 34));
+    const step = width / segments;
+
+    const padAWidth = Math.max(68, Math.min(92, width * 0.14));
+    const padBWidth = Math.max(48, Math.min(64, width * 0.095));
+
+    const padAIndex = Math.floor(segments * (0.18 + Math.random() * 0.2));
+    const padBIndex = Math.floor(segments * (0.60 + Math.random() * 0.2));
+
+    let currentY = height * (0.72 + Math.random() * 0.1);
+
+    for (let i = 0; i <= segments; i++) {
+      const x = i * step;
+
+      if (i === padAIndex) {
+        const padY = Math.min(height - 34, Math.max(height * 0.62, currentY));
+        terrain.push({ x: x, y: padY });
+        terrain.push({ x: x + padAWidth, y: padY });
+        pads.push({ x1: x, x2: x + padAWidth, y: padY, mult: 1, label: 'ZONA A · 1X' });
+        i += Math.ceil(padAWidth / step);
+        currentY = padY;
+        continue;
+      }
+
+      if (i === padBIndex) {
+        const padY = Math.min(height - 34, Math.max(height * 0.56, currentY - 18));
+        terrain.push({ x: x, y: padY });
+        terrain.push({ x: x + padBWidth, y: padY });
+        pads.push({ x1: x, x2: x + padBWidth, y: padY, mult: 2, label: 'ZONA B · 2X' });
+        i += Math.ceil(padBWidth / step);
+        currentY = padY;
+        continue;
+      }
+
+      const roughness = Math.min(34, 18 + sol * 2);
+      currentY += (Math.random() - 0.48) * roughness;
+      currentY = Math.max(height * 0.54, Math.min(height - 26, currentY));
+      terrain.push({ x: x, y: currentY });
+    }
+
+    if (terrain[terrain.length - 1].x < width) {
+      terrain.push({ x: width, y: currentY });
+    } else {
+      terrain[terrain.length - 1].x = width;
+    }
+  }
+
+  function resetLander() {
+    lander.x = width * (0.2 + Math.random() * 0.55);
+    lander.y = 64;
+    lander.vx = (Math.random() - 0.5) * 0.35;
+    lander.vy = 0.08;
+    lander.angle = 0;
+    lander.fuel = Math.max(80, 100 - (sol - 1) * 2);
+    lander.thrusting = false;
+    periscopeExt = 0;
+    debris = [];
+    dust = [];
+
+    if (sol > 1) {
+      const dir = Math.random() > 0.5 ? 1 : -1;
+      wind = dir * Math.min(0.0045, (sol - 1) * 0.001);
+      hudWindWrap.style.display = 'block';
+      const knots = Math.round(Math.abs(wind) * 1600);
+      hudWind.textContent = (wind > 0 ? '→ ' : '← ') + knots + ' kt';
+    } else {
+      wind = 0;
+      hudWindWrap.style.display = 'none';
+    }
+
+    hudSol.textContent = 'SOL ' + String(sol).padStart(2, '0');
+  }
+
+  function startMission(advanceSol) {
+    if (advanceSol) {
+      sol += 1;
+    } else if (state === 'CRASHED') {
+      sol = 1;
+      score = 0;
+      hudScore.textContent = '0000';
+    }
+    generateTerrain();
+    resetLander();
+    state = 'PLAYING';
+    intro.classList.add('is-hidden');
+    toast.classList.remove('is-visible');
+  }
+
+  function getTerrainYAt(x) {
+    for (let i = 0; i < terrain.length - 1; i++) {
+      const p1 = terrain[i];
+      const p2 = terrain[i + 1];
+      if (x >= p1.x && x <= p2.x) {
+        const t = (x - p1.x) / (p2.x - p1.x || 1);
+        return p1.y + t * (p2.y - p1.y);
+      }
+    }
+    return height;
+  }
+
+  function createExplosion(x, y) {
+    debris = [];
+    for (let i = 0; i < 8; i++) {
+      const ang = (Math.PI * 2 * i) / 8 + Math.random() * 0.4;
+      const spd = 0.4 + Math.random() * 1.2;
+      debris.push({
+        x: x,
+        y: y,
+        vx: Math.cos(ang) * spd,
+        vy: Math.sin(ang) * spd - 0.5,
+        rot: Math.random() * Math.PI,
+        vrot: (Math.random() - 0.5) * 0.08,
+        len: 7 + Math.random() * 7
+      });
+    }
+  }
+
+  function spawnDust(x, y, dirX) {
+    if (dust.length > 24) dust.shift();
+    dust.push({
+      x: x + (Math.random() - 0.5) * 8,
+      y: y,
+      vx: dirX * (0.3 + Math.random() * 0.9) + (Math.random() - 0.5) * 0.4,
+      vy: -0.15 - Math.random() * 0.35,
+      life: 1
+    });
+  }
+
+  function updateControls() {
+    let touchLeft = false;
+    let touchRight = false;
+    let touchUp = false;
+
+    activeTouches.forEach((pos) => {
+      const ratioX = pos.x / width;
+      if (ratioX < 0.33) {
+        touchLeft = true;
+      } else if (ratioX > 0.67) {
+        touchRight = true;
+      } else {
+        touchUp = true;
+      }
+    });
+
+    lander.rotLeft = keys.left || touchLeft;
+    lander.rotRight = keys.right || touchRight;
+    lander.thrusting = (keys.up || touchUp) && lander.fuel > 0;
+  }
+
+  function update() {
+    moonOrbitAngle += 0.008;
+
+    if (state === 'LANDED' && periscopeExt < 1) {
+      periscopeExt = Math.min(1, periscopeExt + 0.025);
+    }
+
+    for (let i = dust.length - 1; i >= 0; i--) {
+      const p = dust[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.life -= 0.025;
+      if (p.life <= 0) dust.splice(i, 1);
+    }
+
+    if (state === 'CRASHED') {
+      debris.forEach((d) => {
+        d.vy += GRAVITY * 0.5;
+        d.x += d.vx;
+        d.y += d.vy;
+        d.rot += d.vrot;
+      });
+      return;
+    }
+
+    if (state !== 'PLAYING') return;
+
+    updateControls();
+
+    if (lander.rotLeft) {
+      lander.angle = Math.max(-MAX_TILT, lander.angle - ROT_SPEED);
+      lander.vx -= SIDE_ASSIST;
+    } else if (lander.rotRight) {
+      lander.angle = Math.min(MAX_TILT, lander.angle + ROT_SPEED);
+      lander.vx += SIDE_ASSIST;
+    } else {
+      lander.angle *= 0.92;
+      if (Math.abs(lander.angle) < 0.005) lander.angle = 0;
+    }
+
+    lander.vx *= 0.992;
+    lander.vy += GRAVITY;
+    lander.vx += wind;
+
+    if (lander.thrusting) {
+      lander.vx += Math.sin(lander.angle) * MAIN_THRUST;
+      lander.vy -= Math.cos(lander.angle) * MAIN_THRUST;
+      lander.fuel = Math.max(0, lander.fuel - 0.14);
+    }
+
+    lander.x += lander.vx;
+    lander.y += lander.vy;
+
+    if (lander.x < 18) {
+      lander.x = 18;
+      lander.vx *= -0.35;
+    } else if (lander.x > width - 18) {
+      lander.x = width - 18;
+      lander.vx *= -0.35;
+    }
+
+    if (lander.y < 24) {
+      lander.y = 24;
+      lander.vy = Math.max(0, lander.vy);
+    }
+
+    const groundY = getTerrainYAt(lander.x);
+    const footY = lander.y + 11;
+
+    if (lander.thrusting && groundY - footY < 45) {
+      spawnDust(lander.x, groundY - 1, Math.random() > 0.5 ? 1 : -1);
+    }
+
+    hudFuel.style.width = lander.fuel + '%';
+    const displayVy = (lander.vy * 10).toFixed(1);
+    const displayVx = (lander.vx * 10).toFixed(1);
+    hudVy.textContent = displayVy + ' m/s';
+    hudVx.textContent = displayVx + ' m/s';
+
+    hudVy.className = lander.vy > SAFE_VY ? 'jc-vel-warn' : 'jc-vel-ok';
+
+    if (footY >= groundY) {
+      lander.y = groundY - 11;
+
+      const pad = pads.find((p) => lander.x - 5 >= p.x1 && lander.x + 5 <= p.x2);
+      const isSpeedOk = lander.vy <= SAFE_VY && Math.abs(lander.vx) <= SAFE_VX;
+      const isAngleOk = Math.abs(lander.angle) <= SAFE_ANGLE;
+
+      if (pad && isSpeedOk && isAngleOk) {
+        state = 'LANDED';
+        lander.thrusting = false;
+        lander.vx = 0;
+        lander.vy = 0;
+        lander.angle = 0;
+
+        const fuelBonus = Math.round(lander.fuel * 5);
+        const precisionBonus = Math.round((SAFE_VY - lander.vy) * 100);
+        const missionPoints = (250 + fuelBonus + precisionBonus) * pad.mult;
+        score += missionPoints;
+
+        if (score > bestScore) {
+          bestScore = score;
+          localStorage.setItem('jc_mars_best', String(bestScore));
+        }
+
+        hudScore.textContent = String(score).padStart(4, '0');
+        hudBest.textContent = String(bestScore).padStart(4, '0');
+
+        setTimeout(() => {
+          if (state === 'LANDED') {
+            showToast(
+              'Sol ' + String(sol).padStart(2, '0') + ' completado · +' + missionPoints + ' pts',
+              'Aterrizaje exitoso',
+              'Periscopio desplegado hacia la Tierra. ¿Seguimos explorando?',
+              'Continuar al Sol ' + String(sol + 1).padStart(2, '0')
+            );
+          }
+        }, 900);
+      } else {
+        state = 'CRASHED';
+        lander.thrusting = false;
+        createExplosion(lander.x, lander.y);
+
+        let reason = 'El módulo descendió fuera de la plataforma marcada.';
+        if (pad && !isSpeedOk) {
+          reason = 'Llegaste un poco rápido (' + displayVy + ' m/s). Frená suavemente antes de apoyar.';
+        } else if (pad && !isAngleOk) {
+          reason = 'El módulo apoyó inclinado. Soltá los costados antes para nivelarlo.';
+        }
+
+        setTimeout(() => {
+          if (state === 'CRASHED') {
+            showToast(
+              'Misión interrumpida · Sol ' + String(sol).padStart(2, '0'),
+              'Módulo dañado',
+              reason,
+              'Volver a intentar'
+            );
+          }
+        }, 600);
+      }
+    }
+  }
+
+  function showToast(kicker, title, desc, btnText) {
+    toastKicker.textContent = kicker;
+    toastTitle.textContent = title;
+    toastDesc.textContent = desc;
+    toastNextBtn.textContent = btnText;
+    toast.classList.add('is-visible');
+  }
+
+  function drawEarthAndMoon() {
+    ctx.save();
+
+    const orbitR = 22;
+    ctx.beginPath();
+    ctx.arc(earth.x, earth.y, orbitR, 0, Math.PI * 2);
+    ctx.setLineDash([2, 3]);
+    ctx.strokeStyle = 'rgba(28, 28, 28, 0.22)';
+    ctx.lineWidth = 0.9;
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    const earthR = 7.5;
+    ctx.beginPath();
+    ctx.arc(earth.x, earth.y, earthR, 0, Math.PI * 2);
+    ctx.fillStyle = COLOR_BG;
+    ctx.fill();
+    ctx.strokeStyle = COLOR_INK;
+    ctx.lineWidth = 1.1;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.ellipse(earth.x, earth.y, earthR * 0.45, earthR, 0.2, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(28, 28, 28, 0.45)';
+    ctx.lineWidth = 0.75;
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(earth.x - earthR, earth.y);
+    ctx.lineTo(earth.x + earthR, earth.y);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(earth.x - 2, earth.y - 2, 1.3, 0, Math.PI * 2);
+    ctx.fillStyle = COLOR_ACCENT;
+    ctx.fill();
+
+    const moonX = earth.x + Math.cos(moonOrbitAngle) * orbitR;
+    const moonY = earth.y + Math.sin(moonOrbitAngle) * (orbitR * 0.65);
+
+    ctx.beginPath();
+    ctx.arc(moonX, moonY, 2.3, 0, Math.PI * 2);
+    ctx.fillStyle = COLOR_BG;
+    ctx.fill();
+    ctx.strokeStyle = COLOR_INK;
+    ctx.lineWidth = 0.95;
+    ctx.stroke();
+
+    ctx.fillStyle = COLOR_MUTED;
+    ctx.font = '500 8.5px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('TIERRA · LUNA', earth.x, earth.y + orbitR + 11);
+
+    ctx.restore();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+
+    ctx.fillStyle = 'rgba(28, 28, 28, 0.22)';
+    stars.forEach((s) => {
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    drawEarthAndMoon();
+
+    if (terrain.length > 1) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(terrain[0].x, terrain[0].y);
+      for (let i = 1; i < terrain.length; i++) {
+        ctx.lineTo(terrain[i].x, terrain[i].y);
+      }
+      ctx.lineTo(width, height);
+      ctx.lineTo(0, height);
+      ctx.closePath();
+
+      ctx.fillStyle = 'rgba(28, 28, 28, 0.045)';
+      ctx.fill();
+
+      ctx.clip();
+      ctx.strokeStyle = 'rgba(28, 28, 28, 0.06)';
+      ctx.lineWidth = 1;
+      for (let x = -height; x < width + height; x += 14) {
+        ctx.beginPath();
+        ctx.moveTo(x, height * 0.45);
+        ctx.lineTo(x - height * 0.55, height);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      ctx.beginPath();
+      ctx.moveTo(terrain[0].x, terrain[0].y);
+      for (let i = 1; i < terrain.length; i++) {
+        ctx.lineTo(terrain[i].x, terrain[i].y);
+      }
+      ctx.strokeStyle = COLOR_INK;
+      ctx.lineWidth = 1.25;
+      ctx.stroke();
+    }
+
+    pads.forEach((pad) => {
+      ctx.beginPath();
+      ctx.moveTo(pad.x1, pad.y);
+      ctx.lineTo(pad.x2, pad.y);
+      ctx.strokeStyle = COLOR_ACCENT;
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(pad.x1, pad.y);
+      ctx.lineTo(pad.x1, pad.y - 7);
+      ctx.moveTo(pad.x2, pad.y);
+      ctx.lineTo(pad.x2, pad.y - 7);
+      ctx.strokeStyle = COLOR_ACCENT;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = COLOR_MUTED;
+      ctx.font = '500 9px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(pad.label, (pad.x1 + pad.x2) / 2, pad.y + 14);
+    });
+
+    dust.forEach((p) => {
+      ctx.fillStyle = `rgba(28, 28, 28, ${p.life * 0.35})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    if (state === 'LANDED' && periscopeExt > 0.85) {
+      const scopeX = lander.x;
+      const scopeY = lander.y - 19;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(scopeX, scopeY);
+      ctx.lineTo(earth.x, earth.y);
+      ctx.setLineDash([3, 4]);
+      ctx.strokeStyle = 'rgba(255, 120, 37, 0.55)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = COLOR_ACCENT;
+      ctx.font = '500 9px Inter, sans-serif';
+      ctx.textAlign = lander.x > width * 0.5 ? 'right' : 'left';
+      const labelOffset = lander.x > width * 0.5 ? -14 : 14;
+      ctx.fillText('OBSERVANDO LA TIERRA', scopeX + labelOffset, scopeY - 4);
+      ctx.restore();
+    }
+
+    if (state === 'CRASHED') {
+      ctx.strokeStyle = COLOR_INK;
+      ctx.lineWidth = 1.2;
+      debris.forEach((d) => {
+        ctx.save();
+        ctx.translate(d.x, d.y);
+        ctx.rotate(d.rot);
+        ctx.beginPath();
+        ctx.moveTo(-d.len / 2, 0);
+        ctx.lineTo(d.len / 2, 0);
+        ctx.stroke();
+        ctx.restore();
+      });
+    } else {
+      drawLander();
+    }
+  }
+
+  function drawLander() {
+    ctx.save();
+    ctx.translate(lander.x, lander.y);
+    ctx.rotate(lander.angle);
+
+    if (lander.thrusting) {
+      const flameLen = 10 + Math.random() * 7;
+      ctx.beginPath();
+      ctx.moveTo(-3.5, 7);
+      ctx.lineTo(0, 7 + flameLen);
+      ctx.lineTo(3.5, 7);
+      ctx.closePath();
+      ctx.fillStyle = COLOR_ACCENT;
+      ctx.fill();
+    }
+
+    if (lander.rotLeft && lander.fuel > 0) {
+      ctx.beginPath();
+      ctx.moveTo(6, -3);
+      ctx.lineTo(11, -3);
+      ctx.strokeStyle = COLOR_ACCENT;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+    if (lander.rotRight && lander.fuel > 0) {
+      ctx.beginPath();
+      ctx.moveTo(-6, -3);
+      ctx.lineTo(-11, -3);
+      ctx.strokeStyle = COLOR_ACCENT;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+
+    ctx.strokeStyle = COLOR_INK;
+    ctx.lineWidth = 1.25;
+    ctx.beginPath();
+    ctx.moveTo(-5, 4);
+    ctx.lineTo(-9, 11);
+    ctx.moveTo(-11, 11);
+    ctx.lineTo(-7, 11);
+    ctx.moveTo(5, 4);
+    ctx.lineTo(9, 11);
+    ctx.moveTo(7, 11);
+    ctx.lineTo(11, 11);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(-3, 5);
+    ctx.lineTo(-4, 7);
+    ctx.lineTo(4, 7);
+    ctx.lineTo(3, 5);
+    ctx.stroke();
+
+    if (periscopeExt > 0) {
+      const mastH = 11 * periscopeExt;
+      const dir = earth.x >= lander.x ? 1 : -1;
+      ctx.beginPath();
+      ctx.moveTo(0, -8);
+      ctx.lineTo(0, -8 - mastH);
+      if (periscopeExt > 0.6) {
+        ctx.lineTo(dir * 5, -8 - mastH);
+      }
+      ctx.strokeStyle = COLOR_INK;
+      ctx.lineWidth = 1.3;
+      ctx.stroke();
+
+      if (periscopeExt > 0.8) {
+        ctx.beginPath();
+        ctx.arc(dir * 6, -8 - mastH, 1.4, 0, Math.PI * 2);
+        ctx.fillStyle = COLOR_ACCENT;
+        ctx.fill();
+      }
+    }
+
+    ctx.fillStyle = COLOR_BG;
+    ctx.strokeStyle = COLOR_INK;
+    ctx.lineWidth = 1.25;
+    ctx.beginPath();
+    ctx.moveTo(-4, -8);
+    ctx.lineTo(4, -8);
+    ctx.lineTo(7, 0);
+    ctx.lineTo(5, 5);
+    ctx.lineTo(-5, 5);
+    ctx.lineTo(-7, 0);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(-3, -8);
+    ctx.lineTo(-3, -12);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(-3, -12.5, 1.1, 0, Math.PI * 2);
+    ctx.fillStyle = COLOR_ACCENT;
+    ctx.fill();
+
+    ctx.restore();
+  }
+
+  function loop() {
+    update();
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if (['ArrowUp', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.code)) {
+      e.preventDefault();
+    }
+    if (e.code === 'ArrowUp' || e.code === 'KeyW') keys.up = true;
+    if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = true;
+    if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = true;
+
+    if ((e.code === 'Enter' || e.code === 'Space') && state !== 'PLAYING') {
+      startMission(state === 'LANDED');
+    }
+  });
+
+  window.addEventListener('keyup', (e) => {
+    if (e.code === 'ArrowUp' || e.code === 'KeyW') keys.up = false;
+    if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = false;
+    if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = false;
+  });
+
+  function recordPointer(id, clientX, clientY) {
+    const rect = canvas.getBoundingClientRect();
+    activeTouches.set(id, {
+      x: clientX - rect.left,
+      y: clientY - rect.top
+    });
+  }
+
+  canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    for (let i = 0; i < e.changedTouches.length; i++) {
+      const t = e.changedTouches[i];
+      recordPointer(t.identifier, t.clientX, t.clientY);
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    for (let i = 0; i < e.changedTouches.length; i++) {
+      const t = e.changedTouches[i];
+      recordPointer(t.identifier, t.clientX, t.clientY);
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', (e) => {
+    for (let i = 0; i < e.changedTouches.length; i++) {
+      activeTouches.delete(e.changedTouches[i].identifier);
+    }
+  });
+
+  canvas.addEventListener('touchcancel', (e) => {
+    for (let i = 0; i < e.changedTouches.length; i++) {
+      activeTouches.delete(e.changedTouches[i].identifier);
+    }
+  });
+
+  canvas.addEventListener('mousedown', (e) => {
+    recordPointer('mouse', e.clientX, e.clientY);
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (activeTouches.has('mouse')) {
+      recordPointer('mouse', e.clientX, e.clientY);
+    }
+  });
+
+  window.addEventListener('mouseup', () => {
+    activeTouches.delete('mouse');
+  });
+
+  startBtn.addEventListener('click', () => {
+    startMission(false);
+  });
+
+  toastNextBtn.addEventListener('click', () => {
+    startMission(state === 'LANDED');
+  });
+
+  window.addEventListener('resize', resize);
+
+  resize();
+  loop();
+})();
+</script>
+</body>
+</html>
