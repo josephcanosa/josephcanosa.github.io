@@ -1,9 +1,19 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-}
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box !important;
+}
+
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  min-height: 100% !important;
+  background-color: #F4F1EA !important;
+  overflow-x: hidden !important;
+}
 
 /* =========================================================
    1. ESTRUCTURA Y LIENZO A ANCHO COMPLETO
@@ -24,27 +34,18 @@ html, body {
   line-height: normal !important;
   text-align: left !important;
 
-  width: 100vw !important;
+  width: 100% !important;
+  max-width: 100% !important;
   min-height: 100vh !important;
   min-height: 100dvh !important;
   position: relative !important;
-  left: 50% !important;
-  right: 50% !important;
-  margin: 0 -50vw !important;
+  margin: 0 !important;
   padding: 32px !important;
   box-sizing: border-box !important;
-  box-shadow: 0 0 0 100vmax #F4F1EA !important;
-  clip-path: inset(0 -100vmax -100vmax -100vmax) !important;
 
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
-}
-
-.jc-page *,
-.jc-page *::before,
-.jc-page *::after {
-  box-sizing: border-box !important;
 }
 
 /* =========================================================
@@ -133,7 +134,7 @@ html, body {
   align-items: center !important;
   gap: 5px !important;
   padding: 0 !important;
-  margin: 0 -16px 0 auto !important;
+  margin: 0 0 0 auto !important;
   transition: background-color 0.2s ease, border-color 0.2s ease !important;
 }
 
@@ -184,7 +185,7 @@ html, body {
 .jc-page.jc-page.jc-page nav.jc-menu-panel {
   position: absolute !important;
   top: calc(100% + 10px) !important;
-  right: -16px !important;
+  right: 0 !important;
   z-index: 100 !important;
   min-width: 168px !important;
   width: auto !important;
@@ -239,9 +240,9 @@ html, body {
    5. TITULAR CENTRAL
    ========================================================= */
 .jc-hero {
-  padding: 40px 0 !important;
+  padding: 20px 0 !important;
   margin: 0 !important;
-  flex-grow: 1 !important;
+  flex: 1 1 auto !important;
   display: flex !important;
   align-items: center !important;
   background: none !important;
@@ -279,7 +280,7 @@ html, body {
    ========================================================= */
 .jc-footer {
   width: 100% !important;
-  padding: 24px 0 0 0 !important;
+  padding: 20px 0 0 0 !important;
   margin: 0 !important;
   background: none !important;
   border: 0 !important;
@@ -382,35 +383,34 @@ html, body {
    7. AJUSTES ESCRITORIO
    ========================================================= */
 @media (min-width: 769px) {
-  html, body {
-    overflow-y: auto !important;
-    height: auto !important;
+  /* Si la página no es scrolleable, la ventana queda bloqueada sin barras */
+  html:has(.jc-page:not(.jc-scrollable)),
+  body:has(.jc-page:not(.jc-scrollable)) {
+    overflow-y: hidden !important;
+    height: 100vh !important;
   }
 
   /* Vista pantalla fija (Home) */
   .jc-page:not(.jc-scrollable) {
-    min-height: 100vh !important;
     height: 100vh !important;
     max-height: 100vh !important;
-    padding: 24px 32px 32px 32px !important;
+    padding: 32px 48px !important;
     overflow: hidden !important;
   }
 
-  /* Solo si la barra negra de WordPress está visible (sesión iniciada): se descuenta su alto */
+  /* Si existiera barra de WordPress */
   body.admin-bar .jc-page:not(.jc-scrollable) {
-    min-height: calc(100vh - 32px) !important;
     height: calc(100vh - 32px) !important;
     max-height: calc(100vh - 32px) !important;
   }
 
-  /* Vista con scroll libre para páginas de lectura (Transparencia / Trayectoria) */
-  /* NOTA: Se unifica el padding inferior exactamente a 32px para igualar al index */
+  /* Vista con scroll libre para lecturas largas (Transparencia / Trayectoria) */
   .jc-page.jc-scrollable {
     height: auto !important;
     min-height: 100vh !important;
     max-height: none !important;
     overflow-y: visible !important;
-    padding: 32px 32px 32px 32px !important;
+    padding: 40px 48px !important;
   }
 
   .jc-hero {
@@ -418,16 +418,16 @@ html, body {
   }
 
   .jc-footer {
-    padding-top: 14px !important;
+    padding-top: 16px !important;
     margin-bottom: 0 !important;
   }
 
   .jc-page.jc-page.jc-page label.jc-menu-btn {
-    margin: 0 48px 0 auto !important;
+    margin: 0 !important;
   }
 
   .jc-page.jc-page.jc-page nav.jc-menu-panel {
-    right: 48px !important;
+    right: 0 !important;
   }
 }
 
@@ -439,14 +439,15 @@ html, body {
     padding: 24px 20px !important;
     height: auto !important;
     min-height: 100vh !important;
+    min-height: 100dvh !important;
   }
 
   .jc-page label.jc-menu-btn {
-    margin: 0 -8px 0 auto !important;
+    margin: 0 !important;
   }
 
   .jc-page nav.jc-menu-panel {
-    right: -8px !important;
+    right: 0 !important;
     min-width: 156px !important;
     border-radius: 20px !important;
   }
