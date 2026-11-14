@@ -1,19 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box !important;
-}
-
 html, body {
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100% !important;
-  min-height: 100% !important;
-  background-color: #F4F1EA !important;
-  overflow-x: hidden !important;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
 
 /* =========================================================
    1. ESTRUCTURA Y LIENZO A ANCHO COMPLETO
@@ -34,18 +24,27 @@ html, body {
   line-height: normal !important;
   text-align: left !important;
 
-  width: 100% !important;
-  max-width: 100% !important;
+  width: 100vw !important;
   min-height: 100vh !important;
   min-height: 100dvh !important;
   position: relative !important;
-  margin: 0 !important;
+  left: 50% !important;
+  right: 50% !important;
+  margin: 0 -50vw !important;
   padding: 32px !important;
   box-sizing: border-box !important;
+  box-shadow: 0 0 0 100vmax #F4F1EA !important;
+  clip-path: inset(0 -100vmax -100vmax -100vmax) !important;
 
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
+}
+
+.jc-page *,
+.jc-page *::before,
+.jc-page *::after {
+  box-sizing: border-box !important;
 }
 
 /* =========================================================
@@ -134,7 +133,7 @@ html, body {
   align-items: center !important;
   gap: 5px !important;
   padding: 0 !important;
-  margin: 0 0 0 auto !important;
+  margin: 0 -16px 0 auto !important;
   transition: background-color 0.2s ease, border-color 0.2s ease !important;
 }
 
@@ -185,7 +184,7 @@ html, body {
 .jc-page.jc-page.jc-page nav.jc-menu-panel {
   position: absolute !important;
   top: calc(100% + 10px) !important;
-  right: 0 !important;
+  right: -16px !important;
   z-index: 100 !important;
   min-width: 168px !important;
   width: auto !important;
@@ -240,9 +239,9 @@ html, body {
    5. TITULAR CENTRAL
    ========================================================= */
 .jc-hero {
-  padding: 20px 0 !important;
+  padding: 40px 0 !important;
   margin: 0 !important;
-  flex: 1 1 auto !important;
+  flex-grow: 1 !important;
   display: flex !important;
   align-items: center !important;
   background: none !important;
@@ -280,7 +279,7 @@ html, body {
    ========================================================= */
 .jc-footer {
   width: 100% !important;
-  padding: 20px 0 0 0 !important;
+  padding: 24px 0 0 0 !important;
   margin: 0 !important;
   background: none !important;
   border: 0 !important;
@@ -383,6 +382,353 @@ html, body {
    7. AJUSTES ESCRITORIO
    ========================================================= */
 @media (min-width: 769px) {
-  /* Si la página no es scrolleable, la ventana queda bloqueada sin barras */
-  html:has(.jc-page:not(.jc-scrollable)),
-  body:
+  html, body {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
+
+  /* Vista pantalla fija (Home) */
+  .jc-page:not(.jc-scrollable) {
+    min-height: 100vh !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    padding: 24px 32px 32px 32px !important;
+    overflow: hidden !important;
+  }
+
+  /* Solo si la barra negra de WordPress está visible (sesión iniciada): se descuenta su alto */
+  body.admin-bar .jc-page:not(.jc-scrollable) {
+    min-height: calc(100vh - 32px) !important;
+    height: calc(100vh - 32px) !important;
+    max-height: calc(100vh - 32px) !important;
+  }
+
+  /* Vista con scroll libre para páginas de lectura (Transparencia / Trayectoria) */
+  /* NOTA: Se unifica el padding inferior exactamente a 32px para igualar al index */
+  .jc-page.jc-scrollable {
+    height: auto !important;
+    min-height: 100vh !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+    padding: 32px 32px 32px 32px !important;
+  }
+
+  .jc-hero {
+    padding: 0 !important;
+  }
+
+  .jc-footer {
+    padding-top: 14px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .jc-page.jc-page.jc-page label.jc-menu-btn {
+    margin: 0 48px 0 auto !important;
+  }
+
+  .jc-page.jc-page.jc-page nav.jc-menu-panel {
+    right: 48px !important;
+  }
+}
+
+/* =========================================================
+   8. AJUSTES CELULAR / TABLET
+   ========================================================= */
+@media (max-width: 768px) {
+  .jc-page {
+    padding: 24px 20px !important;
+    height: auto !important;
+    min-height: 100vh !important;
+  }
+
+  .jc-page label.jc-menu-btn {
+    margin: 0 -8px 0 auto !important;
+  }
+
+  .jc-page nav.jc-menu-panel {
+    right: -8px !important;
+    min-width: 156px !important;
+    border-radius: 20px !important;
+  }
+
+  .jc-page nav.jc-menu-panel a.jc-menu-link,
+  .jc-page nav.jc-menu-panel a.jc-menu-link:link,
+  .jc-page nav.jc-menu-panel a.jc-menu-link:visited {
+    font-size: 18px !important;
+    padding: 0 20px !important;
+    min-height: 36px !important;
+  }
+
+  .jc-hero {
+    padding: 24px 0 !important;
+  }
+
+  .jc-page h1.jc-headline {
+    font-size: clamp(32px, 8.5vw, 42px) !important;
+    line-height: 1.15 !important;
+  }
+
+  .jc-footer {
+    padding-top: 18px !important;
+    gap: 14px !important;
+  }
+
+  .jc-footer-left {
+    gap: 16px !important;
+  }
+
+  .jc-page a.jc-button,
+  .jc-page button.jc-button {
+    font-size: 10px !important;
+    padding: 7px 13px !important;
+  }
+
+  .jc-page a.jc-social-link {
+    font-size: 11px !important;
+  }
+
+  .jc-caption {
+    font-size: 10px !important;
+  }
+}
+
+/* =========================================================
+   9. ESTILOS DE DOCUMENTO EDITORIAL Y FORMULARIO
+   ========================================================= */
+.jc-reader-column {
+  width: 100% !important;
+  max-width: 720px !important;
+  margin: 40px auto 60px auto !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  flex-grow: 1 !important;
+}
+
+.jc-doc-kicker {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  color: #7A7874 !important;
+  margin-bottom: 20px !important;
+  line-height: 1 !important;
+}
+
+.jc-doc-h1 {
+  font-family: 'Newsreader', Georgia, serif !important;
+  font-size: clamp(32px, 4.2vw, 48px) !important;
+  line-height: 1.18 !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.01em !important;
+  color: #1C1C1C !important;
+  margin: 0 0 24px 0 !important;
+}
+
+.jc-doc-standfirst {
+  font-family: 'Newsreader', Georgia, serif !important;
+  font-size: clamp(20px, 2.3vw, 24px) !important;
+  line-height: 1.35 !important;
+  color: #1C1C1C !important;
+  margin: 0 0 16px 0 !important;
+}
+
+.jc-doc-notice {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  color: #7A7874 !important;
+  margin: 0 0 32px 0 !important;
+  padding-bottom: 18px !important;
+  border-bottom: 1px solid rgba(28, 28, 28, 0.12) !important;
+}
+/* =========================================================
+   10. DIRECTORIO DE HERRAMIENTAS (GRILLA EDITORIAL)
+   ========================================================= */
+.jc-tools-filters {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin: 28px 0 36px 0 !important;
+  padding-bottom: 22px !important;
+  border-bottom: 1px solid rgba(28, 28, 28, 0.12) !important;
+}
+
+.jc-page.jc-page.jc-page button.jc-filter-pill {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-color: transparent !important;
+  color: #1C1C1C !important;
+  -webkit-text-fill-color: #1C1C1C !important;
+  border: 1px solid rgba(28, 28, 28, 0.24) !important;
+  border-radius: 62px !important;
+  padding: 6px 14px !important;
+  margin: 0 !important;
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease !important;
+}
+
+.jc-page.jc-page.jc-page button.jc-filter-pill:hover {
+  border-color: #FF7825 !important;
+  color: #FF7825 !important;
+  -webkit-text-fill-color: #FF7825 !important;
+}
+
+.jc-page.jc-page.jc-page button.jc-filter-pill.is-active {
+  background-color: #1C1C1C !important;
+  border-color: #1C1C1C !important;
+  color: #F4F1EA !important;
+  -webkit-text-fill-color: #F4F1EA !important;
+}
+
+.jc-cat-section {
+  margin: 0 0 44px 0 !important;
+}
+
+.jc-cat-section:last-of-type {
+  margin-bottom: 0 !important;
+}
+
+.jc-cat-section.is-hidden {
+  display: none !important;
+}
+
+.jc-cat-header {
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: space-between !important;
+  margin: 0 0 14px 0 !important;
+  padding: 0 0 8px 0 !important;
+}
+
+.jc-page h2.jc-cat-title {
+  font-family: 'Newsreader', Georgia, serif !important;
+  font-size: 23px !important;
+  font-weight: 400 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.01em !important;
+  color: #1C1C1C !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.jc-cat-count {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em !important;
+  color: #7A7874 !important;
+}
+
+/* Grilla editorial de bordes finos (hairline) */
+.jc-tools-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  border-top: 1px solid rgba(28, 28, 28, 0.14) !important;
+  border-left: 1px solid rgba(28, 28, 28, 0.14) !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-tool-card,
+.jc-page.jc-page.jc-page a.jc-tool-card:link,
+.jc-page.jc-page.jc-page a.jc-tool-card:visited {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  padding: 18px 20px !important;
+  margin: 0 !important;
+  text-decoration: none !important;
+  border: 0 !important;
+  border-right: 1px solid rgba(28, 28, 28, 0.14) !important;
+  border-bottom: 1px solid rgba(28, 28, 28, 0.14) !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-tool-card * {
+  cursor: pointer !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-tool-card:hover {
+  background-color: rgba(28, 28, 28, 0.03) !important;
+}
+
+.jc-tool-top {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  margin: 0 0 8px 0 !important;
+}
+
+.jc-tool-name {
+  font-family: 'Newsreader', Georgia, serif !important;
+  font-size: 19px !important;
+  font-weight: 400 !important;
+  line-height: 1.25 !important;
+  color: #1C1C1C !important;
+  -webkit-text-fill-color: #1C1C1C !important;
+  transition: color 0.2s ease !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-tool-card:hover .jc-tool-name {
+  color: #FF7825 !important;
+  -webkit-text-fill-color: #FF7825 !important;
+}
+
+.jc-tool-arrow {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 1.2 !important;
+  color: #7A7874 !important;
+  -webkit-text-fill-color: #7A7874 !important;
+  flex-shrink: 0 !important;
+  transition: transform 0.2s ease, color 0.2s ease !important;
+}
+
+.jc-page.jc-page.jc-page a.jc-tool-card:hover .jc-tool-arrow {
+  transform: translate(2px, -2px) !important;
+  color: #FF7825 !important;
+  -webkit-text-fill-color: #FF7825 !important;
+}
+
+.jc-tool-desc {
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  color: #4A4845 !important;
+  -webkit-text-fill-color: #4A4845 !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 640px) {
+  .jc-tools-filters {
+    gap: 6px !important;
+    margin: 22px 0 28px 0 !important;
+  }
+
+  .jc-page.jc-page.jc-page button.jc-filter-pill {
+    font-size: 10px !important;
+    padding: 6px 11px !important;
+  }
+
+  .jc-tools-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .jc-page.jc-page.jc-page a.jc-tool-card,
+  .jc-page.jc-page.jc-page a.jc-tool-card:link,
+  .jc-page.jc-page.jc-page a.jc-tool-card:visited {
+    padding: 16px !important;
+  }
+}
