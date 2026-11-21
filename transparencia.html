@@ -67,40 +67,34 @@ Estas condiciones establecen el marco de trabajo y buscan garantizar la autonom�
 <input type="hidden" name="_next" value="https://www.josecarmuega.com/gracias.html">
 <input type="hidden" name="Fecha y Hora de Envío" id="jcTimestamp" value="">
 
-<!-- Nombre y Apellido -->
+<!-- Nombre y Apellido (Obligatorios) -->
 <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px;">
 <div style="flex: 1 1 220px; display: flex; flex-direction: column;">
-<label style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; color: #7A7874; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em;">Nombre</label>
-<input type="text" name="Nombre" placeholder="Su nombre" required style="background: transparent; border: 1px solid #1C1C1C; border-radius: 10px; padding: 9px 12px; font-family: 'Inter', sans-serif; font-size: 13px; color: #1C1C1C; outline: none; box-sizing: border-box;">
+<input type="text" name="Nombre" aria-label="Su nombre" placeholder="Su nombre" required style="background: transparent; border: 1px solid #1C1C1C; border-radius: 10px; padding: 10px 13px; font-family: 'Inter', sans-serif; font-size: 13px; color: #1C1C1C; outline: none; box-sizing: border-box;">
 </div>
 <div style="flex: 1 1 220px; display: flex; flex-direction: column;">
-<label style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; color: #7A7874; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em;">Apellido</label>
-<input type="text" name="Apellido" placeholder="Su apellido" required style="background: transparent; border: 1px solid #1C1C1C; border-radius: 10px; padding: 9px 12px; font-family: 'Inter', sans-serif; font-size: 13px; color: #1C1C1C; outline: none; box-sizing: border-box;">
+<input type="text" name="Apellido" aria-label="Su apellido" placeholder="Su apellido" required style="background: transparent; border: 1px solid #1C1C1C; border-radius: 10px; padding: 10px 13px; font-family: 'Inter', sans-serif; font-size: 13px; color: #1C1C1C; outline: none; box-sizing: border-box;">
 </div>
 </div>
 
-<!-- WhatsApp e Instagram -->
+<!-- WhatsApp y Web o enlace de red social (Opcionales) -->
 <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px;">
 <div style="flex: 1 1 220px; display: flex; flex-direction: column;">
-<label style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; color: #7A7874; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em;">WhatsApp</label>
-<input type="tel" name="WhatsApp" placeholder="+54 9 11 ..." required style="background: transparent; border: 1px solid #1C1C1C; border-radius: 10px; padding: 9px 12px; font-family: 'Inter', sans-serif; font-size: 13px; color: #1C1C1C; outline: none; box-sizing: border-box;">
+<input type="tel" name="WhatsApp" aria-label="WhatsApp" placeholder="WhatsApp (ej. +54 9 11 ...)" style="background: transparent; border: 1px solid #1C1C1C; border-radius: 10px; padding: 10px 13px; font-family: 'Inter', sans-serif; font-size: 13px; color: #1C1C1C; outline: none; box-sizing: border-box;">
 </div>
 <div style="flex: 1 1 220px; display: flex; flex-direction: column;">
-<label style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; color: #7A7874; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em;">Instagram</label>
-<input type="text" name="Instagram" placeholder="@usuario o enlace" style="background: transparent; border: 1px solid #1C1C1C; border-radius: 10px; padding: 9px 12px; font-family: 'Inter', sans-serif; font-size: 13px; color: #1C1C1C; outline: none; box-sizing: border-box;">
+<input type="text" name="Web o enlace de red social" aria-label="Web o enlace de red social" placeholder="Web o enlace de red social" style="background: transparent; border: 1px solid #1C1C1C; border-radius: 10px; padding: 10px 13px; font-family: 'Inter', sans-serif; font-size: 13px; color: #1C1C1C; outline: none; box-sizing: border-box;">
 </div>
 </div>
 
-<!-- Correo electrónico -->
+<!-- Correo electrónico (Obligatorio) -->
 <div style="display: flex; flex-direction: column; margin-bottom: 14px;">
-<label style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; color: #7A7874; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em;">Correo electrónico</label>
-<input type="email" name="Email" placeholder="nombre@ejemplo.com" required style="background: transparent; border: 1px solid #1C1C1C; border-radius: 10px; padding: 9px 12px; font-family: 'Inter', sans-serif; font-size: 13px; color: #1C1C1C; outline: none; box-sizing: border-box;">
+<input type="email" name="Email" aria-label="Correo electrónico" placeholder="Correo electrónico" required style="background: transparent; border: 1px solid #1C1C1C; border-radius: 10px; padding: 10px 13px; font-family: 'Inter', sans-serif; font-size: 13px; color: #1C1C1C; outline: none; box-sizing: border-box;">
 </div>
 
-<!-- Consulta -->
+<!-- Consulta (Opcional) -->
 <div style="display: flex; flex-direction: column; margin-bottom: 18px;">
-<label style="font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; color: #7A7874; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.04em;">Contar brevemente su consulta</label>
-<textarea name="Consulta" rows="4" placeholder="Escriba aquí brevemente el motivo de su consulta o proyecto..." required style="background: transparent; border: 1px solid #1C1C1C; border-radius: 10px; padding: 10px 12px; font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.5; color: #1C1C1C; outline: none; box-sizing: border-box; resize: vertical; min-height: 100px;"></textarea>
+<textarea name="Consulta" rows="4" aria-label="Contar brevemente su consulta" placeholder="Contar brevemente su consulta" style="background: transparent; border: 1px solid #1C1C1C; border-radius: 10px; padding: 10px 13px; font-family: 'Inter', sans-serif; font-size: 13px; line-height: 1.5; color: #1C1C1C; outline: none; box-sizing: border-box; resize: vertical; min-height: 100px;"></textarea>
 </div>
 
 <!-- Aceptación -->
