@@ -52,5 +52,36 @@ Trabajo con personas, empresas e instituciones para pensar, ordenar y desarrolla
 <div class="jc-caption">Ciudad de Buenos Aires&nbsp;&nbsp;|&nbsp;&nbsp;<a href="https://ciudadseva.com/texto/la-ultima-pregunta/" target="_blank" rel="noopener" style="color: inherit !important; -webkit-text-fill-color: inherit !important; font: inherit !important; text-decoration: none !important;">La última pregunta</a></div>
 </footer>
 </div>
+
+<!-- Barra inferior de Cookies / Privacidad -->
+<div id="jc-cookie-banner" class="jc-cookie-bar" role="region" aria-label="Aviso de privacidad y cookies">
+  <div class="jc-cookie-inner">
+    <p class="jc-cookie-text">
+      Utilizamos cookies propias y de terceros estrictamente necesarias para el funcionamiento técnico, seguridad y navegación del sitio según los estándares vigentes de privacidad.
+    </p>
+    <div class="jc-cookie-actions">
+      <button type="button" class="jc-cookie-btn jc-cookie-reject" onclick="jcGestionarCookies('rejected')">Rechazar</button>
+      <button type="button" class="jc-cookie-btn jc-cookie-accept" onclick="jcGestionarCookies('accepted')">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function jcGestionarCookies(estado) {
+    localStorage.setItem('jc_cookies_consent', estado);
+    const banner = document.getElementById('jc-cookie-banner');
+    if (banner) {
+      banner.classList.add('is-hidden');
+      setTimeout(() => { banner.style.display = 'none'; }, 350);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('jc_cookies_consent')) {
+      const banner = document.getElementById('jc-cookie-banner');
+      if (banner) banner.style.display = 'none';
+    }
+  });
+</script>
 </body>
 </html>
